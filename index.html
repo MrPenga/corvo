@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>IL CORVO — Il Bracconiere delle Wildlands</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Pirata+One&family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nero: #080807;
+      --fondo: #10100e;
+      --pannello: #181713;
+      --pannello-2: #201d18;
+      --bordo: #484037;
+      --bordo-scuro: #2b2924;
+      --inchiostro: #ded8ca;
+      --sbiadito: #a79e90;
+      --rosso: #8b3730;
+      --rosso-luce: #ba574b;
+      --oro: #c2a67d;
+      --font-titolo: 'Pirata One', 'IM Fell English SC', Georgia, serif;
+      --font-testo: 'Special Elite', 'Courier New', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-width: 320px; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--inchiostro);
+      font-family: var(--font-testo);
+      background:
+        radial-gradient(ellipse at 49% -14%, #42312944 0%, transparent 52%),
+        radial-gradient(circle at 90% 96%, #24170f 0%, transparent 34%),
+        repeating-linear-gradient(90deg, #ffffff02 0 1px, transparent 1px 9px),
+        var(--nero);
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      opacity: .14;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+      mix-blend-mode: screen;
+    }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible {
+      outline: 2px solid var(--rosso-luce);
+      outline-offset: 3px;
+    }
+    .page { max-width: 1250px; padding: 46px 26px 70px; margin: 0 auto; }
+    .top {
+      position: relative;
+      padding: 38px 20px 35px;
+      margin-bottom: 33px;
+      border-top: 1px solid #736252;
+      border-bottom: 1px solid var(--bordo);
+      text-align: center;
+      background:
+        linear-gradient(135deg, transparent 12%, #371d191b 12.3%, transparent 12.6%),
+        repeating-linear-gradient(177deg, transparent 0 14px, #c5b7a205 15px 16px),
+        #15130f;
+      box-shadow: 0 9px 25px #0009, inset 0 0 0 4px #080807, inset 0 0 0 5px #342c25;
+    }
+    .top::before, .top::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 22%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #796550, transparent);
+      transform: rotate(-2deg);
+    }
+    .top::before { left: 4%; }
+    .top::after { right: 4%; transform: rotate(2deg); }
+    .masthead {
+      margin: 0;
+      font-family: var(--font-titolo);
+      font-size: clamp(4.2rem, 11.8vw, 9rem);
+      letter-spacing: .065em;
+      line-height: 1;
+      font-weight: 400;
+      background: repeating-linear-gradient(174deg, #e5ded0 0px, #ddd4c5 3px, #7e766a 4px, #d2c8b6 5px, #ece4d5 10px, #83786c 11px, #d9d0c0 14px);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(3px 4px 0 #000);
+    }
+    .subtitle {
+      margin-top: 14px;
+      color: var(--rosso-luce);
+      font-family: 'IM Fell English SC', Georgia, serif;
+      text-transform: uppercase;
+      font-size: .96rem;
+      letter-spacing: .35em;
+    }
+    .layout { display: grid; grid-template-columns: minmax(0, 1fr) 298px; gap: 24px; align-items: start; }
+    .listino, .conto {
+      position: relative;
+      border: 1px solid var(--bordo);
+      background:
+        repeating-linear-gradient(-38deg, #ffffff02 0 1px, transparent 1px 7px),
+        linear-gradient(135deg, #1e1c17, #12110f 70%);
+      box-shadow: 6px 8px 0 #0008, inset 0 0 0 4px #0c0c0a;
+    }
+    .listino::before, .conto::before {
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      inset: 9px;
+      border: 1px solid #74634b24;
+    }
+    .panel-head {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 25px 27px 17px;
+      border-bottom: 1px solid #504537;
+      background: linear-gradient(90deg, #08080861, transparent);
+    }
+    .panel-head h2, .conto h2 {
+      margin: 0;
+      font: 400 2.3rem/1 var(--font-titolo);
+      letter-spacing: .06em;
+      color: #e4dccc;
+      text-shadow: 2px 2px 0 #070705, -1px 0 #625342;
+    }
+    .count { font-size: .68rem; letter-spacing: .14em; color: var(--sbiadito); }
+    #catalogo { padding: 8px 18px 20px; }
+    .articolo {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto 98px;
+      align-items: center;
+      column-gap: 16px;
+      padding: 17px 9px;
+      min-height: 89px;
+      border-bottom: 1px dashed #5a4b3b;
+    }
+    .articolo:last-child { border-bottom: none; }
+    .descrizione { min-width: 0; }
+    .nome {
+      display: block;
+      font: 400 1.41rem/1.15 'IM Fell English SC', Georgia, serif;
+      text-transform: uppercase;
+      letter-spacing: .035em;
+      overflow-wrap: anywhere;
+      color: #e2dacb;
+      text-shadow: 1px 1px #070705;
+    }
+    .prezzo {
+      display: block;
+      margin-top: 7px;
+      color: var(--oro);
+      font-size: .86rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .controlli {
+      display: flex;
+      align-items: center;
+      height: 38px;
+      background: #080807;
+      border: 1px solid #655340;
+      box-shadow: 2px 3px 0 #0008;
+    }
+    .qbtn {
+      flex: 0 0 35px;
+      width: 35px;
+      height: 36px;
+      border: 0;
+      color: #d6cbba;
+      background: #242019;
+      font-size: 1.45rem;
+      line-height: 1;
+      transition: background .15s ease, color .15s ease;
+    }
+    .qbtn:hover:not(:disabled) { background: #492a24; color: #fff; }
+    .qbtn:disabled { cursor: not-allowed; color: #605a50; }
+    .quantita {
+      width: 47px;
+      min-width: 0;
+      height: 36px;
+      padding: 1px 3px 0;
+      border: 0;
+      border-left: 1px solid #3a3229;
+      border-right: 1px solid #3a3229;
+      background: #0d0d0b;
+      color: #f1e7d7;
+      text-align: center;
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+    .quantita::-webkit-outer-spin-button, .quantita::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .parziale { text-align: right; font-variant-numeric: tabular-nums; }
+    .parziale .piccolo {
+      display: block;
+      margin-bottom: 6px;
+      color: #8f8679;
+      font-size: .59rem;
+      letter-spacing: .13em;
+    }
+    .somma { color: #e5dbcc; white-space: nowrap; font-size: .94rem; }
+    .articolo.attivo .nome { color: #fff3e3; }
+    .articolo.attivo .somma { color: #ddaa81; }
+    .conto { padding: 26px 23px 23px; position: sticky; top: 24px; }
+    .conto h2 { padding-bottom: 19px; border-bottom: 1px solid #60503e; }
+    .riepilogo { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 23px 0 19px; }
+    .riepilogo span { color: var(--sbiadito); font-size: .75rem; }
+    .riepilogo strong { font: 1.05rem var(--font-testo); font-variant-numeric: tabular-nums; }
+    .totale-wrap {
+      padding: 22px 5px 25px;
+      border-top: 1px dashed #604d3b;
+      border-bottom: 1px dashed #604d3b;
+      text-align: center;
+      background: radial-gradient(ellipse at center, #6d241918, transparent 80%);
+    }
+    .totale-wrap .label {
+      display: block;
+      margin-bottom: 10px;
+      font: 400 1.1rem 'IM Fell English SC', Georgia, serif;
+      letter-spacing: .2em;
+      color: #b8aa98;
+    }
+    #totale {
+      display: block;
+      color: #e7c3a8;
+      font-family: 'IM Fell English SC', Georgia, serif;
+      font-size: clamp(2.15rem, 3vw, 2.8rem);
+      line-height: 1.15;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+      text-shadow: 1px 1px #080807;
+    }
+    .azzera {
+      display: block;
+      width: 100%;
+      margin-top: 20px;
+      min-height: 45px;
+      padding: 11px;
+      background: #211714;
+      border: 1px solid #7b3a32;
+      color: #d4b8aa;
+      text-transform: uppercase;
+      font-size: .75rem;
+      letter-spacing: .16em;
+    }
+    .azzera:hover:not(:disabled) { background: #4a251f; color: #fff1e5; }
+    .azzera:disabled { opacity: .48; cursor: not-allowed; }
+    .vuoto { text-align: center; color: var(--sbiadito); padding: 48px 16px; }
+    @media (max-width: 950px) { .layout { grid-template-columns: 1fr; } .conto { position: static; } }
+    @media (max-width: 600px) {
+      .page { padding: 20px 11px 45px; }
+      .top { padding: 33px 10px 30px; margin-bottom: 20px; }
+      .top::before, .top::after { display: none; }
+      .masthead { font-size: clamp(3.75rem, 15vw, 5.5rem); }
+      .subtitle { font-size: .77rem; letter-spacing: .21em; }
+      .panel-head { padding: 23px 18px 13px; }
+      #catalogo { padding: 4px 11px 13px; }
+      .articolo { grid-template-columns: minmax(0, 1fr) auto; gap: 11px 10px; padding: 15px 5px; }
+      .descrizione { grid-column: 1 / -1; }
+      .controlli { justify-self: start; }
+      .parziale { justify-self: end; }
+      .nome { font-size: 1.35rem; }
+      .prezzo { margin-top: 3px; }
+      .conto { padding: 24px 20px 20px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="top">
+      <h1 class="masthead">IL CORVO</h1>
+      <div class="subtitle">IL BRACCONIERE DELLE WILDLANDS</div>
+    </header>
+
+    <div class="layout">
+      <section class="listino" aria-labelledby="listino-title">
+        <div class="panel-head">
+          <h2 id="listino-title">La merce</h2>
+          <span class="count" id="numero-articoli"></span>
+        </div>
+        <div id="catalogo"></div>
+      </section>
+
+      <aside class="conto" aria-labelledby="conto-title">
+        <h2 id="conto-title">Il conto</h2>
+        <div class="riepilogo">
+          <span>PEZZI SELEZIONATI</span>
+          <strong id="pezzi">0</strong>
+        </div>
+        <div class="totale-wrap">
+          <span class="label">TOTALE</span>
+          <output id="totale" aria-live="polite">$0.00</output>
+        </div>
+        <button class="azzera" type="button" id="azzera" disabled>✕ &nbsp; Azzera quantità</button>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    'use strict';
+
+    // LISTINO DEL BRACCONIERE: modifica qui nomi e prezzi.
+    const CATALOGO = [
+      { nome: 'Artigli Aquila', prezzo: 4.00 },
+      { nome: 'Piume Aquila', prezzo: 6.00 },
+      { nome: 'Pelliccia Wapiti', prezzo: 3.00 },
+      { nome: 'Carne di Wapiti', prezzo: 2.00 },
+      { nome: 'Pelliccia Bufalo', prezzo: 3.00 },
+      { nome: 'Carne Bufalo', prezzo: 2.00 },
+      { nome: 'Pelliccia di Alce', prezzo: 4.00 },
+      { nome: 'Corna Alce', prezzo: 2.00 }
+    ];
+
+    const MAX_QUANTITA = 99999;
+    const quantita = Array(CATALOGO.length).fill(0);
+    const catalogoEl = document.getElementById('catalogo');
+    const pezziEl = document.getElementById('pezzi');
+    const totaleEl = document.getElementById('totale');
+    const azzeraEl = document.getElementById('azzera');
+
+    const soldi = (valore) => '$' + valore.toLocaleString('en-US', {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    });
+
+    const prezziCentesimi = CATALOGO.map(({prezzo}) => Math.round(Number(prezzo) * 100));
+
+    function creaRiga(prodotto, indice) {
+      const articolo = document.createElement('div');
+      articolo.className = 'articolo';
+      articolo.dataset.indice = indice;
+
+      const desc = document.createElement('div');
+      desc.className = 'descrizione';
+      const nome = document.createElement('span');
+      nome.className = 'nome';
+      nome.textContent = prodotto.nome;
+      const prezzo = document.createElement('span');
+      prezzo.className = 'prezzo';
+      prezzo.textContent = soldi(prezziCentesimi[indice] / 100) + ' / pz';
+      desc.append(nome, prezzo);
+
+      const comandi = document.createElement('div');
+      comandi.className = 'controlli';
+      const meno = document.createElement('button');
+      meno.className = 'qbtn';
+      meno.type = 'button';
+      meno.textContent = '−';
+      meno.setAttribute('aria-label', 'Diminuisci quantità: ' + prodotto.nome);
+      meno.dataset.azione = 'meno';
+      const campo = document.createElement('input');
+      campo.className = 'quantita';
+      campo.type = 'number';
+      campo.inputMode = 'numeric';
+      campo.min = '0';
+      campo.max = String(MAX_QUANTITA);
+      campo.step = '1';
+      campo.value = '0';
+      campo.setAttribute('aria-label', 'Quantità: ' + prodotto.nome);
+      const piu = document.createElement('button');
+      piu.className = 'qbtn';
+      piu.type = 'button';
+      piu.textContent = '+';
+      piu.setAttribute('aria-label', 'Aumenta quantità: ' + prodotto.nome);
+      piu.dataset.azione = 'piu';
+      comandi.append(meno, campo, piu);
+
+      const parziale = document.createElement('div');
+      parziale.className = 'parziale';
+      const etichetta = document.createElement('span');
+      etichetta.className = 'piccolo';
+      etichetta.textContent = 'IMPORTO';
+      const importo = document.createElement('span');
+      importo.className = 'somma';
+      importo.textContent = soldi(0);
+      parziale.append(etichetta, importo);
+
+      articolo.append(desc, comandi, parziale);
+      return articolo;
+    }
+
+    function aggiorna() {
+      let centesimi = 0;
+      let pezzi = 0;
+      const righe = catalogoEl.querySelectorAll('.articolo');
+      righe.forEach((riga, indice) => {
+        const q = quantita[indice];
+        const subtotale = prezziCentesimi[indice] * q;
+        centesimi += subtotale;
+        pezzi += q;
+        riga.classList.toggle('attivo', q > 0);
+        riga.querySelector('.quantita').value = q;
+        riga.querySelector('.somma').textContent = soldi(subtotale / 100);
+        riga.querySelector('[data-azione="meno"]').disabled = q === 0;
+        riga.querySelector('[data-azione="piu"]').disabled = q >= MAX_QUANTITA;
+      });
+      pezziEl.textContent = pezzi.toLocaleString('it-IT');
+      totaleEl.textContent = soldi(centesimi / 100);
+      azzeraEl.disabled = pezzi === 0;
+    }
+
+    function normalizzaNumero(valore) {
+      const numero = Number(valore);
+      if (!Number.isFinite(numero) || numero < 0) return 0;
+      return Math.min(MAX_QUANTITA, Math.trunc(numero));
+    }
+
+    catalogoEl.addEventListener('click', (evento) => {
+      const pulsante = evento.target.closest('button[data-azione]');
+      if (!pulsante) return;
+      const riga = pulsante.closest('.articolo');
+      const indice = Number(riga.dataset.indice);
+      const differenza = pulsante.dataset.azione === 'piu' ? 1 : -1;
+      quantita[indice] = normalizzaNumero(quantita[indice] + differenza);
+      aggiorna();
+    });
+
+    catalogoEl.addEventListener('input', (evento) => {
+      if (!evento.target.matches('.quantita')) return;
+      const indice = Number(evento.target.closest('.articolo').dataset.indice);
+      quantita[indice] = normalizzaNumero(evento.target.value);
+      // Durante la digitazione consente temporaneamente di svuotare il campo.
+      const contenutoOriginale = evento.target.value;
+      aggiorna();
+      if (contenutoOriginale === '') evento.target.value = '';
+    });
+
+    catalogoEl.addEventListener('change', (evento) => {
+      if (!evento.target.matches('.quantita')) return;
+      const indice = Number(evento.target.closest('.articolo').dataset.indice);
+      quantita[indice] = normalizzaNumero(evento.target.value);
+      aggiorna();
+    });
+
+    azzeraEl.addEventListener('click', () => { quantita.fill(0); aggiorna(); });
+
+    document.getElementById('numero-articoli').textContent = CATALOGO.length + ' ARTICOLI';
+    if (CATALOGO.length) {
+      catalogoEl.append(...CATALOGO.map(creaRiga));
+    } else {
+      const vuoto = document.createElement('p');
+      vuoto.className = 'vuoto';
+      vuoto.textContent = 'Nessuna merce nel listino.';
+      catalogoEl.append(vuoto);
+    }
+    aggiorna();
+  </script>
+</body>
+</html>
